@@ -1,0 +1,13 @@
+{
+   "pair": {
+      "start": {
+         "title": "Setup NHC",
+         "intro": "Enter your IP",
+         "error": "An error has occurred.",
+         "ip": "Enter the ip of the NHC gateway",
+         "required": "IP is a required value.",
+         "name": "Give your nhc a name:",
+         "saveSettings": "Save settings"
+      }
+   }
+}
