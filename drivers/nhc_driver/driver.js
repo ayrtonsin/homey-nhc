@@ -2,8 +2,6 @@
 
 const Homey = require('homey');
 const niko = require('niko-home-control');
-//const tcp = require('tcp-client');
-
 
 class MyDriver extends Homey.Driver {
 
@@ -48,7 +46,7 @@ class MyDriver extends Homey.Driver {
 
 
         _deviceToHomey(d, ip){
-          var cap = ["onoff"]; //TODO based on type
+          var cap = ["onoff"];
           if (d.type == 2){
             cap.push("dim");
           }
@@ -66,22 +64,15 @@ class MyDriver extends Homey.Driver {
         _connectNiko (ip){
           console.log("connecting niko");
            niko.init({
-            ip: ip, // "192.168.1.2",//this.settings.ip,
+            ip: ip,
             port: 8000,
             timeout: 20000,
             events: true
           });
         }
 
-          //TODO no longer used, remove
-  	onInit() {
-          var that = this;
-              //this._connectNiko("192.168.1.2");
-       	  //this.log('NHC driver has been inited');
-        }
-
-  // This method is called when a user is adding a device
-  // and the 'list_devices' view is called
+        // This method is called when a user is adding a device
+        // and the 'list_devices' view is called
 	_onPairListDevices( data, callback ) {
           console.log("pairing devices");
           var that = this;

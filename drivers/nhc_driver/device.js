@@ -16,6 +16,7 @@ class MyDevice extends Homey.Device {
             //switch
 	    this.registerCapabilityListener('onoff', this.onCapabilityOnoff.bind(this));
           }else if(this.getData().type == 2){
+            //dimmer
             this.registerCapabilityListener('onoff', this.onCapabilityOnoff.bind(this));
             this.registerCapabilityListener('dim', this.onCapabilityDim.bind(this));
           }
@@ -61,7 +62,7 @@ class MyDevice extends Homey.Device {
               var data = that.getData();
               if(d.id == data.id){
                 var powerState = d.value1 > 0;
-                that.log('same device.. updating value', powerState);
+                that.log('updating device value', d.id, d.value1, powerState);
                 that.setCapabilityValue('onoff', powerState)
                   .catch(that.error);  
                 if(data.type == 2){
