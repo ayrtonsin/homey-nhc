@@ -1,0 +1,1 @@
+Niko Home Control app for homey, it interfaces with the ip-module (V1 only)

@@ -25,7 +25,7 @@ class MyDevice extends Homey.Device {
 
         // this method is called when the Device has requested a state change (turned on or off)
 	async onCapabilityOnoff( value, opts ) {
-          //this.log('value::' +  value);
+          this.log('switching light with value::' +  value);
           var data = this.getData();
 
           niko
