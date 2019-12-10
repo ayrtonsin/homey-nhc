@@ -1,0 +1,11 @@
+{
+  "0.0.2": {
+    "en": "crash fix when more then 10 devices"
+  },
+  "0.0.3": {
+    "en": "fixed app background images"
+  },
+  "0.0.4": {
+    "en": "bug fixes, note: restart app when you no longer get external updates from nhc."
+  }
+}
