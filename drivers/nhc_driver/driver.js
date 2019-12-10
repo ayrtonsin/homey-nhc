@@ -5,13 +5,13 @@ const niko = require('niko-home-control');
 
 class MyDriver extends Homey.Driver {
 
-
        onPair(socket) {
 
          let devices = {};
          var that = this;
 
-         // this is called when the user presses save settings button in pair.html
+         // this is called when the user presses save settings button in
+            // pair.html
          socket.on('set_settings', (device_data, callback) => {
            this.log("setting settings using ip",device_data.ip);
            try {
@@ -46,11 +46,11 @@ class MyDriver extends Homey.Driver {
 
 
         _deviceToHomey(d, ip){
-          var cap = ["onoff"];
-          if (d.type == 2){
-            cap.push("dim");
-          }
-          return {name: d.name,
+            var cap = ["onoff"];
+            if (d.type == 2){
+                cap.push("dim");
+            } 
+            return {name: d.name,
                   data: {id: d.id,
                          type: d.type},
                   settings: {ip: ip},
@@ -86,6 +86,49 @@ class MyDriver extends Homey.Driver {
 
 	}
 
+        onInit(){
+          console.log("init lights driver");
+          // register a capability listener
+          this.trackNhcEvent(this);
+        }
+
+        trackNhcEvent(t){
+          this.log('tracking nhc event...');
+          var that = this;
+          // TODO hacky need to listen to each individual (unique) gateway(s) ip's.
+          // let's assume there is only one :-)
+          if (that.getDevices() != null && that.getDevices().length > 0){
+              var ip = that.getDevices()[0].getSetting("ip");
+              this.log('ip:', ip);
+              this._connectNiko(ip);
+              niko.events.on('listactions', (event) => {
+                that.log('nhc event received...');
+                that.getDevices().forEach(function (device){
+                  that.maybeExecuteOnDevice(that, device, event.data);
+                });
+              });              
+          } else {
+              this.log('cannot track nhc events, no devices found');
+          }
+         
+          // this.log('end tracking..');
+        }
+
+        maybeExecuteOnDevice(that, device, data){
+          data.forEach(function (d) {
+              //that.log("device??",device);
+              var data = device.getData();
+              if(d.id == data.id){
+                var powerState = d.value1 > 0;
+                that.log('updating device value', d.id, d.value1, powerState);
+                device.setCapabilityValue('onoff', powerState)
+                  .catch(that.error);  
+                if(data.type == 2){
+                  device.setCapabilityValue('dim', d.value1 / 100);
+                }
+              }
+            });          
+        }
 }
 
 module.exports = MyDriver;

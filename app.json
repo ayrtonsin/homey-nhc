@@ -1,13 +1,18 @@
 {
   "id": "com.athom.nhc",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "compatibility": ">=0.0.1",
   "sdk": 2,
   "name": {
     "en": "NHC - Niko Home Control"
   },
   "tags": {
-    "en": ["light", "switch", "dimmer", "nhc"]
+    "en": [
+      "light",
+      "switch",
+      "dimmer",
+      "nhc"
+    ]
   },
   "description": {
     "en": "Adds support for Niko Home Control V1, connects with the nhc ip module through tcp"
@@ -41,8 +46,8 @@
       },
       "pair": [
         {
-	  "id": "pair"          
-	},	
+          "id": "pair"
+        },
         {
           "id": "list_devices",
           "template": "list_devices",
@@ -54,7 +59,8 @@
           "id": "add_my_devices",
           "template": "add_devices"
         }
-      ],"settings": [
+      ],
+      "settings": [
         {
           "type": "group",
           "label": {
@@ -73,7 +79,8 @@
               }
             }
           ]
-        }]
+        }
+      ]
     }
   ]
 }
