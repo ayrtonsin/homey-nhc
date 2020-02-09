@@ -3,9 +3,12 @@
 const Homey = require('homey');
 const niko = require('niko-home-control');
 const listThermostatCmd = '{"cmd": "listthermostat"}';
-const execCmd = (id, mode) => {
+const execModeCmd = (id, mode) => {
     return '{"cmd": "executethermostat", "id":' + id + ', "mode": ' + mode + '}';
   };
+  const execTempCmd = (id, overrule, time) => {
+      return '{"cmd": "executethermostat", "id":' + id + ', "overrule": ' + overrule + ', "overruletime": ' + time+ '}';
+    };
 
 class MyDevice extends Homey.Device {
 	
@@ -19,6 +22,7 @@ class MyDevice extends Homey.Device {
 		//check for thermostat state in the NHC controller in an interval
         this.intervalObj = setInterval(this.trackNhcThermostats, 30000,this);
         this.registerCapabilityListener('thermostat_mode', this.onModeChange.bind(this));
+        this.registerCapabilityListener('target_temperature', this.onTempChange.bind(this));
         this.log('Done init thermostat device');
 	}
 	
@@ -98,7 +102,7 @@ class MyDevice extends Homey.Device {
 	    var nhcMode = this.homeyModeToNhc(value);
 	    this.log('switching thermostat mode value::' +  nhcMode);
         var data = this.getData();
-        niko.command(execCmd(data.id, nhcMode))
+        niko.command(execModeCmd(data.id, nhcMode))
             .then(function(response){
                 that.log('execute thermostat response...');
                 that.log(response);
@@ -106,6 +110,23 @@ class MyDevice extends Homey.Device {
                 
             });
 	}
+	
+	//this method is called when Homey requests a new temperature value
+    async onTempChange(value, opts) {
+        var that = this;
+        var data = this.getData();
+        var time = "01:00";
+        this.log('setting thermostat value::' +  value);
+        var target = value * 10;
+        var data = this.getData();
+        niko.command(execTempCmd(data.id, target, time))
+            .then(function(response){
+                that.log('execute thermostat response...');
+                that.log(response);
+                that.setCapabilityValue('target_temperature', target);
+                
+            });
+    }
 
 	_connectNiko (ip){
 	  console.log("connecting niko");
