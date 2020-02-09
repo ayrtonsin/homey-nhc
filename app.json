@@ -1,6 +1,6 @@
 {
   "id": "com.athom.nhc",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "compatibility": ">=0.0.1",
   "sdk": 2,
   "name": {
@@ -12,14 +12,15 @@
       "switch",
       "dimmer",
       "nhc",
-	  "thermostat"
+      "thermostat"
     ]
   },
   "description": {
     "en": "Adds support for Niko Home Control V1, connects with the nhc ip module through tcp"
   },
   "category": [
-    "lights", "climate"
+    "lights",
+    "climate"
   ],
   "permissions": [],
   "images": {
