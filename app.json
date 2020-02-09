@@ -90,7 +90,7 @@
         "en": "thermostat"
       },
       "class": "thermostat",
-      "capabilities": [],
+      "capabilities": ["thermostat_mode", "target_temperature", "measure_temperature"],
       "images": {
         "large": "/drivers/thermostat/assets/images/large.png",
         "small": "/drivers/thermostat/assets/images/small.png"
