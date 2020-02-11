@@ -18,7 +18,10 @@ class MyDevice extends Homey.Device {
 		this.log('Class:', this.getClass());
         this.log('id:', this.getData().id);
 
-        
+        var ip = this.getSetting("ip");
+        if (ip != null){
+        	this._connectNiko(ip);
+        }
 		//check for thermostat state in the NHC controller in an interval
         this.intervalObj = setInterval(this.trackNhcThermostats, 30000,this);
         this.registerCapabilityListener('thermostat_mode', this.onModeChange.bind(this));
@@ -70,28 +73,24 @@ class MyDevice extends Homey.Device {
     
 
 	trackNhcThermostats(that){
-        that.log('tracking nhc thermostats...');
-        var ip = that.getSetting("ip");
-        if (ip != null){
-            that._connectNiko(ip);
-            niko.command(listThermostatCmd)
-                .then(function(response){
-                    that.log('nhc thermostat response...');
-                    response.data.forEach(function (d) {
-                        that.log("same id??",d);
-                        var data = that.getData();
-                        if(d.id == data.id){
-                            var measured = d.measured / 10;
-                            var setpoint = d.setpoint / 10;
-                            var mode = that.nhcProgramToMode(d.mode);
-                            that.log('updating device value', d.id);
-                            that.setCapabilityValue('measure_temperature', measured);
-                            that.setCapabilityValue('target_temperature', setpoint);
-                            that.setCapabilityValue('thermostat_mode', mode);
-                    }
-                });
+        //that.log('tracking nhc thermostats...');       
+        niko.command(listThermostatCmd)
+            .then(function(response){
+                //that.log('nhc thermostat response...');
+                response.data.forEach(function (d) {
+                    //that.log("same id??",d);
+                    var data = that.getData();
+                    if(d.id == data.id){
+                        var measured = d.measured / 10;
+                        var setpoint = d.setpoint / 10;
+                        var mode = that.nhcProgramToMode(d.mode);
+                        that.log('updating device value', d.id, measured, setpoint, mode);
+                        that.setCapabilityValue('measure_temperature', measured);
+                        that.setCapabilityValue('target_temperature', setpoint);
+                        that.setCapabilityValue('thermostat_mode', mode);
+                }
             });
-        }
+        });
     }
 	
 	
@@ -100,14 +99,13 @@ class MyDevice extends Homey.Device {
 	    var that = this;
 	    var data = this.getData();
 	    var nhcMode = this.homeyModeToNhc(value);
-	    this.log('switching thermostat mode value::' +  nhcMode);
+	    this.log('switching thermostat mode value::', nhcMode);
         var data = this.getData();
         niko.command(execModeCmd(data.id, nhcMode))
             .then(function(response){
-                that.log('execute thermostat response...');
-                that.log(response);
+                //that.log('execute thermostat response...');
+                that.log("response:", response);
                 that.setCapabilityValue('thermostat_mode', value);
-                
             });
 	}
 	
@@ -116,13 +114,13 @@ class MyDevice extends Homey.Device {
         var that = this;
         var data = this.getData();
         var time = "01:00";
-        this.log('setting thermostat value::' +  value);
+        this.log('setting thermostat value::', value);
         var target = value * 10;
         var data = this.getData();
         niko.command(execTempCmd(data.id, target, time))
             .then(function(response){
-                that.log('execute thermostat response...');
-                that.log(response);
+                //that.log('execute thermostat response...');
+                that.log("response:", response);
                 that.setCapabilityValue('target_temperature', target);
                 
             });
