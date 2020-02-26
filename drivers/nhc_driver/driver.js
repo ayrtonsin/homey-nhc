@@ -3,7 +3,7 @@
 const Homey = require('homey');
 const niko = require('niko-home-control');
 
-class MyDriver extends Homey.Driver {
+class MyDriver extends Homey.Driver { 
 
        onPair(socket) {
 
@@ -13,7 +13,7 @@ class MyDriver extends Homey.Driver {
          // this is called when the user presses save settings button in
             // pair.html
          socket.on('set_settings', (device_data, callback) => {
-           this.log("setting settings using ip",device_data.ip);
+        	 this.log("setting settings using ip",device_data.ip);
            try {
              this.ip = device_data.ip;
              this._connectNiko(this.ip);
@@ -116,7 +116,7 @@ class MyDriver extends Homey.Driver {
 
         maybeExecuteOnDevice(that, device, data){
           data.forEach(function (d) {
-              //that.log("device??",device);
+              // that.log("device??",device);
               var data = device.getData();
               if(d.id == data.id){
                 var powerState = d.value1 > 0;

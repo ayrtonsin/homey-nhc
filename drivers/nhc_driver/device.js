@@ -23,31 +23,31 @@ class MyDevice extends Homey.Device {
       }
 	}
 
-        // this method is called when the Device has requested a state change (turned on or off)
+    // this method is called when the Device has requested a state change (turned on or off)
 	async onCapabilityOnoff( value, opts ) {
           this.log('switching light with value::' +  value);
           var data = this.getData();
 
-          niko
+        niko
             .executeActions(data.id, value ? 100 : 0)
             .then(function (response) {
               //console.log(response);
               //TODO capture error
             });
-        }
+    }
 
-          // this method is called when the Device has requested a state change (dim)
+    // this method is called when the Device has requested a state change (dim)
 	async onCapabilityDim( value, opts ) {
-          //this.log('value::' +  value);
-          var data = this.getData();
+        //this.log('value::' +  value);
+        var data = this.getData();
 
-          niko
+        niko
             .executeActions(data.id, value * 100)
             .then(function (response) {
               //console.log(response);
               //TODO capture error
             });
-        }
+    }
 
         _connectNiko (ip){
           console.log("device, connecting niko: ", ip);
