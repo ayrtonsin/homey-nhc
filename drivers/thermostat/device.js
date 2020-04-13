@@ -18,7 +18,6 @@ class MyDevice extends Homey.Device {
 		this.log('Class:', this.getClass());
         this.log('id:', this.getData().id);
 
-        var ip = this.getSetting("ip");
         
 		//check for thermostat state in the NHC controller in an interval
         this.intervalObj = setInterval(this.trackNhcThermostats, 30000,this);

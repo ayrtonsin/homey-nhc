@@ -9,5 +9,9 @@
          "name": "Give your nhc a name:",
          "saveSettings": "Save settings"
       }
-   }
+   },
+	"settings": {
+    "title": "General",
+    "subtitle": "Please fill in the ip of the NHC gateway, when changed with active devices a restart of the NHC app is required."
+  }
 }

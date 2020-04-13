@@ -15,8 +15,8 @@ class ThermostatDriver extends Homey.Driver {
 		socket.on('set_settings', (device_data, callback) => {
 			this.log("setting settings using ip", device_data.ip);
 			try {
-				this.ip = device_data.ip;
-				this._connectNiko(this.ip);
+				/*this.ip = device_data.ip;
+				this._connectNiko(this.ip);*/
 
 				callback(null, device_data);
 			} catch (e) {
@@ -47,9 +47,9 @@ class ThermostatDriver extends Homey.Driver {
 	onInit() {
 		console.log("init thermostat driver");
 		if (this.getDevices() != null && this.getDevices().length > 0) {
-			var ip = this.getDevices()[0].getSetting("ip");
+			/*var ip = this.getDevices()[0].getSetting("ip");
 			this.log('ip:', ip);
-			this._connectNiko(ip);
+			this._connectNiko(ip);*/
 		}
 	}
 
@@ -65,7 +65,7 @@ class ThermostatDriver extends Homey.Driver {
 		return resp.data.map(function(d) { return that._deviceToHomey(d, that.ip) });
 	}
 
-	_connectNiko(ip) {
+	/*_connectNiko(ip) {
 		console.log("thermostat driver, connecting niko", ip);
 		niko.init({
 			ip: ip,
@@ -73,7 +73,7 @@ class ThermostatDriver extends Homey.Driver {
 			timeout: 2000,
 			events: false
 		});
-	}
+	}*/
 }
 
 module.exports = ThermostatDriver;
