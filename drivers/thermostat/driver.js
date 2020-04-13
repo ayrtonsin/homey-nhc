@@ -60,7 +60,7 @@ class ThermostatDriver extends Homey.Driver {
             ip: ip,
             port: 8000,
             timeout: 20000,
-            events: true
+            events: false
           });
         }
 	

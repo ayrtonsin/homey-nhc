@@ -19,9 +19,7 @@ class MyDevice extends Homey.Device {
         this.log('id:', this.getData().id);
 
         var ip = this.getSetting("ip");
-        if (ip != null){
-        	this._connectNiko(ip);
-        }
+        
 		//check for thermostat state in the NHC controller in an interval
         this.intervalObj = setInterval(this.trackNhcThermostats, 30000,this);
         this.registerCapabilityListener('thermostat_mode', this.onModeChange.bind(this));
@@ -101,7 +99,7 @@ class MyDevice extends Homey.Device {
 	    var nhcMode = this.homeyModeToNhc(value);
 	    this.log('switching thermostat mode value::', nhcMode);
         var data = this.getData();
-        niko.command(execModeCmd(data.id, nhcMode))
+        return niko.command(execModeCmd(data.id, nhcMode))
             .then(function(response){
                 //that.log('execute thermostat response...');
                 that.log("response:", response);
@@ -117,25 +115,15 @@ class MyDevice extends Homey.Device {
         this.log('setting thermostat value::', value);
         var target = value * 10;
         var data = this.getData();
-        niko.command(execTempCmd(data.id, target, time))
+        return niko.command(execTempCmd(data.id, target, time))
             .then(function(response){
                 //that.log('execute thermostat response...');
                 that.log("response:", response);
-                that.setCapabilityValue('target_temperature', target);
+				that.log("target:", target)
+                that.setCapabilityValue('target_temperature', value);
                 
             });
     }
-
-	_connectNiko (ip){
-	  console.log("connecting niko");
-	   niko.init({
-		ip: ip, // "192.168.1.2",//this.settings.ip,
-		port: 8000,
-		timeout: 20000,
-		events: false
-	  });
-	}	
-	
 }
 
 module.exports = MyDevice;

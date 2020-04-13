@@ -11,7 +11,6 @@ class MyDevice extends Homey.Device {
 	  this.log('Name:', this.getName());
 	  this.log('Class:', this.getClass());
       this.log('id:', this.getData().id);
-      this._connectNiko(this.getSettings().ip);
 
       if(this.getData().type == 1){
           //switch
@@ -28,7 +27,7 @@ class MyDevice extends Homey.Device {
           this.log('switching light with value::' +  value);
           var data = this.getData();
 
-        niko
+        return niko
             .executeActions(data.id, value ? 100 : 0)
             .then(function (response) {
               //console.log(response);
@@ -41,25 +40,13 @@ class MyDevice extends Homey.Device {
         //this.log('value::' +  value);
         var data = this.getData();
 
-        niko
+        return niko
             .executeActions(data.id, value * 100)
             .then(function (response) {
               //console.log(response);
               //TODO capture error
             });
-    }
-
-        _connectNiko (ip){
-          console.log("device, connecting niko: ", ip);
-           niko.init({
-            ip: ip, // "192.168.1.2",//this.settings.ip,
-            port: 8000,
-            timeout: 20000,
-            events: false
-          });
-        }
-
-        	
+    }	
 }
 
 module.exports = MyDevice;
