@@ -74,7 +74,6 @@ class ThermostatDriver extends Homey.Driver {
 			events: false
 		});
 	}
-
 }
 
 module.exports = ThermostatDriver;
