@@ -67,7 +67,7 @@ class MyDriver extends Homey.Driver {
 
 	_connectNiko(ip) {
 		console.log("connecting driver", ip);
-		var init = niko.init({
+		niko.init({
 			ip: ip,
 			port: 8000,
 			timeout: 5000,
