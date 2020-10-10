@@ -13,5 +13,8 @@
   },
   "0.2.0": {
     "en": "Reworked connections to NHC, reduced amount of connections, centralised to general app settings. When updating the ip needs to be set in a new app setting. General bug fixes related to tcp connection timeouts."
+  },
+  "0.2.1": {
+    "en": "bug fixes related to TCP timeouts & connection resets"
   }
 }

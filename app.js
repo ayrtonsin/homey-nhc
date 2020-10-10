@@ -23,7 +23,7 @@ class MyApp extends Homey.App {
 		//var ip = '192.168.1.2';
 		this._connectNiko(ip);
 		//reconnect every hour
-		this.intervalObj = setInterval(() => this._connectNiko(ip), 3600000, this);
+		//this.intervalObj = setInterval(() => this._connectNiko(ip), 3600000, this);
 		
 		//this.log('methods:', this.getMethods(this));
 
@@ -58,7 +58,16 @@ class MyApp extends Homey.App {
 						});
 						socket.on('error', error => {
 							that.error('error received', error);
-							throw error;
+							if(error.code === 'ECONNRESET'){
+								that.log('ECONNRESET receieved, reconnecting');
+								that._connectNiko(ip);								
+							}else if (error.code === 'ETIMEDOUT'){
+								that.log('timeout received, reconnecting after 5 seconds');
+								setTimeout(() => {that._connectNiko(ip);}, 5000);
+								
+							}else{
+								throw error;
+							}
 						});
 					} else {
 						that.error("NHC gateway unreachable, valid ip?");
