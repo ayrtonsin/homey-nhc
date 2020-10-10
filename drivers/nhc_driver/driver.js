@@ -67,7 +67,7 @@ class MyDriver extends Homey.Driver {
 
 	_connectNiko(ip) {
 		console.log("connecting driver", ip);
-		var init = niko.init({
+		niko.init({
 			ip: ip,
 			port: 8000,
 			timeout: 5000,
@@ -83,7 +83,7 @@ class MyDriver extends Homey.Driver {
 		var that = this;
 		niko
 			.listActions()
-			.then(functionresponse) {
+			.then(function(response) {
 				that.log(response);
 				var nhcList = that._devicesToHomey(response);
 				callback(null, nhcList);
@@ -100,12 +100,7 @@ class MyDriver extends Homey.Driver {
 	trackNhcEvent(t) {
 		this.log('tracking nhc event...');
 		var that = this;
-		// TODO hacky need to listen to each individual (unique) gateway(s) ip's.
-		// let's assume there is only one :-)
 		if (that.getDevices() != null && that.getDevices().length > 0) {
-			var ip = that.getDevices()[0].getSetting("ip");
-			this.log('ip:', ip);
-			this._connectNiko(ip);
 			niko.events.on('listactions', (event) => {
 				that.log('nhc event received...');
 				that.getDevices().forEach(function(device) {
@@ -115,8 +110,6 @@ class MyDriver extends Homey.Driver {
 		} else {
 			this.log('cannot track nhc events, no devices found');
 		}
-
-		// this.log('end tracking..');
 	}
 
 	maybeExecuteOnDevice(that, device, data) {
